@@ -5,6 +5,8 @@ from string import ascii_lowercase
 
 import networkx as nx
 
+from wordward.util import concat
+
 indices = {c: i for i, c in enumerate(ascii_lowercase)}
 reverse_indices = {i: c for i, c in enumerate(ascii_lowercase)}
 
@@ -12,7 +14,7 @@ reverse_indices = {i: c for i, c in enumerate(ascii_lowercase)}
 def main():
     words = read_file(Path(__file__).parent / 'wordlist')
     graph = build_graph(words)
-    with (Path(__file__).parent / 'graph').open('w') as record:
+    with (Path(__file__).parent / 'graph').open('wb') as record:
         pickle.dump(graph, record)
 
 
@@ -76,11 +78,6 @@ def empty_tree(depth, width=26):
 
 def read_file(wordfile):
     return filter(None, Path(wordfile).read_text().split())
-
-
-def concat(*iterables):
-    for it in iterables:
-        yield from it
 
 
 if __name__ == '__main__':

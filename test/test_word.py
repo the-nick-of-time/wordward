@@ -1,4 +1,4 @@
-from wordward.wordward import anagrams, empty_tree, build_tree, find_adjacency
+from wordward.generate import anagrams, empty_tree, build_tree, find_adjacency
 
 
 def test_anagram():
