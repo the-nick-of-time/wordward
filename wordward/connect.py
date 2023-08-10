@@ -13,5 +13,11 @@ def main(start, end):
 
 
 def load() -> nx.Graph:
-    with (Path(__file__).parent / 'graph').open('r') as pickled:
+    with (Path(__file__).parent / 'graph').open('rb') as pickled:
         return pickle.load(pickled)
+
+
+if __name__ == '__main__':
+    from sys import argv
+
+    main(argv[1], argv[2])

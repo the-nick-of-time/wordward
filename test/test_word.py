@@ -1,4 +1,6 @@
-from wordward.generate import anagrams, empty_tree, build_tree, find_adjacency
+import networkx as nx
+
+from wordward.generate import anagrams, empty_tree, build_tree, find_adjacency, build_graph, leaf_clusters
 
 
 def test_anagram():
@@ -36,3 +38,33 @@ def test_find_adjacency():
     assert {'face', 'fade'} in clusters
     assert {'fade', 'bade'} in clusters
     assert {'bead'} in clusters
+
+
+def test_build_graph():
+    words = ['face', 'fade', 'fare', 'bade', 'bead']
+    expected = nx.Graph()
+    expected.add_edges_from([
+        ['face', 'fade'],
+        ['face', 'fare'],
+        ['fade', 'fare'],
+        ['fade', 'bade'],
+        ['bade', 'bead'],
+    ])
+    assert nx.utils.graphs_equal(expected, build_graph(words))
+
+
+def test_leaf_clusters_solo():
+    words = ['face', 'fade', 'bade']
+    tree = build_tree(words, 0, 6)
+    clusters = list(leaf_clusters(tree, 0))
+    assert all(len(c) == 1 for c in clusters)
+    assert len(clusters) == 3
+
+
+def test_leaf_clusters():
+    words = ['face', 'fade', 'bade']
+    tree = build_tree(words, 1, 6)
+    clusters = list(leaf_clusters(tree, 1))
+    assert {'face', 'fade'} in clusters
+    assert {'bade'} in clusters
+    assert len(clusters) == 2
