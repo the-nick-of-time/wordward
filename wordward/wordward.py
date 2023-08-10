@@ -1,3 +1,4 @@
+import pickle
 from collections import defaultdict
 from pathlib import Path
 from string import ascii_lowercase
@@ -6,6 +7,20 @@ import networkx as nx
 
 indices = {c: i for i, c in enumerate(ascii_lowercase)}
 reverse_indices = {i: c for i, c in enumerate(ascii_lowercase)}
+
+
+def main():
+    words = read_file(Path(__file__).parent / 'wordlist')
+    graph = build_graph(words)
+    with (Path(__file__).parent / 'graph').open('w') as record:
+        pickle.dump(graph, record)
+
+
+def build_graph(words):
+    graph = nx.Graph()
+    for cluster in concat(anagrams(words), find_adjacency(words)):
+        graph.add_edges_from(nx.complete_graph(cluster).edges())
+    return graph
 
 
 def anagrams(words):
@@ -68,7 +83,5 @@ def concat(*iterables):
         yield from it
 
 
-def build_graph(words):
-    graph = nx.Graph()
-    for cluster in concat(anagrams(words), find_adjacency(words)):
-        graph.add_edges_from(nx.complete_graph(cluster).edges())
+if __name__ == '__main__':
+    main()
