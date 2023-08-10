@@ -16,6 +16,12 @@ def anagrams(words):
     return groups.values()
 
 
+def find_adjacency(words):
+    for i in range(4):
+        tree = build_tree(words, i)
+        yield from leaf_clusters(tree, i)
+
+
 def build_tree(words, rotate, width=26):
     tree = empty_tree(4, width)
     for word in words:
@@ -26,21 +32,24 @@ def build_tree(words, rotate, width=26):
     return tree
 
 
-def find_adjacency(words):
-    for i in range(4):
-        tree = build_tree(words, i)
-        yield from leaf_clusters(tree)
-
-
-def leaf_clusters(tree):
+def leaf_clusters(tree, rotate):
     for i, top in enumerate(tree):
         for j, mid in enumerate(top):
             for k, low in enumerate(mid):
-                cluster = []
+                cluster = set()
                 for l, include in enumerate(low):
                     if include:
-                        cluster.append(''.join(reverse_indices[n] for n in (i, j, k, l)))
-                yield cluster
+                        cluster.add(''.join(reverse_indices[n] for n in unrotate((i, j, k, l), rotate)))
+                if cluster:
+                    yield cluster
+
+
+def rotation_indices(rotation):
+    return range(-rotation, 4 - rotation)
+
+
+def unrotate(seq, rotate):
+    return [seq[i] for i in rotation_indices(4 - rotate)]
 
 
 def empty_tree(depth, width=26):

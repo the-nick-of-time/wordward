@@ -1,4 +1,4 @@
-from src.wordward import anagrams, empty_tree, build_tree, find_adjacency
+from wordward.wordward import anagrams, empty_tree, build_tree, find_adjacency
 
 
 def test_anagram():
@@ -20,9 +20,19 @@ def test_build_tree():
     assert tree == expected
 
 
+def test_build_tree_rotated():
+    words = ['face', 'fade', 'bade']
+    tree = build_tree(words, 3, 6)
+    expected = empty_tree(4, 6)
+    expected[0][2][4][5] = True
+    expected[0][3][4][5] = True
+    expected[0][3][4][1] = True
+    assert tree == expected
+
+
 def test_find_adjacency():
     words = ['face', 'fade', 'bade', 'bead']
     clusters = list(find_adjacency(words))
-    assert ['face', 'fade'] in clusters
-    assert ['fade', 'bade'] in clusters
-    assert ['bead'] in clusters
+    assert {'face', 'fade'} in clusters
+    assert {'fade', 'bade'} in clusters
+    assert {'bead'} in clusters
