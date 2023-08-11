@@ -1,6 +1,8 @@
+from pathlib import Path
+
 import networkx as nx
 
-from wordward.generate import anagrams, empty_tree, build_tree, find_adjacency, build_graph, leaf_clusters
+from wordward.generate import anagrams, empty_tree, build_tree, find_adjacency, build_graph, leaf_clusters, read_file
 
 
 def test_anagram():
@@ -40,6 +42,15 @@ def test_find_adjacency():
     assert {'bead'} in clusters
 
 
+def test_adjacency_span():
+    words = ['mace', 'face', 'mice', 'mate', 'mack']
+    adjacencies = list(find_adjacency(words))
+    assert {'mace', 'face'} in adjacencies
+    assert {'mace', 'mice'} in adjacencies
+    assert {'mace', 'mate'} in adjacencies
+    assert {'mace', 'mack'} in adjacencies
+
+
 def test_build_graph():
     words = ['face', 'fade', 'fare', 'bade', 'bead']
     expected = nx.Graph()
@@ -68,3 +79,9 @@ def test_leaf_clusters():
     assert {'face', 'fade'} in clusters
     assert {'bade'} in clusters
     assert len(clusters) == 2
+
+
+def test_wordlist():
+    words = list(read_file(Path(__file__).parent.parent / 'wordward/wordlist'))
+    assert len(words) == 2351
+    assert all(len(w) == 4 for w in words)

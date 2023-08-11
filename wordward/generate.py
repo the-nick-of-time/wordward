@@ -5,7 +5,7 @@ from string import ascii_lowercase
 
 import networkx as nx
 
-from wordward.util import concat
+from wordward.util import concat, take
 
 indices = {c: i for i, c in enumerate(ascii_lowercase)}
 reverse_indices = {i: c for i, c in enumerate(ascii_lowercase)}
@@ -21,7 +21,7 @@ def main():
 def build_graph(words):
     graph = nx.Graph()
     for cluster in concat(anagrams(words), find_adjacency(words)):
-        graph.add_edges_from(nx.complete_graph(cluster).edges())
+        graph.update(nx.complete_graph(cluster))
     return graph
 
 
@@ -43,7 +43,7 @@ def build_tree(words, rotate, width=26):
     tree = empty_tree(4, width)
     for word in words:
         track = tree
-        for i in range(-rotate, 3 - rotate):
+        for i in take(3, rotation_indices(rotate)):
             track = track[indices[word[i]]]
         track[indices[word[3 - rotate]]] = True
     return tree
@@ -77,7 +77,7 @@ def empty_tree(depth, width=26):
 
 
 def read_file(wordfile):
-    return filter(None, Path(wordfile).read_text().split())
+    return Path(wordfile).read_text().split()
 
 
 if __name__ == '__main__':
