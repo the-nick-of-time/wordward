@@ -3,6 +3,8 @@ from pathlib import Path
 
 import networkx as nx
 
+import generate
+
 
 def main(start, end):
     graph = load()
@@ -11,6 +13,9 @@ def main(start, end):
 
 
 def load() -> nx.Graph:
+    pickled = Path(__file__).parent / 'graph'
+    if not pickled.exists():
+        generate.main()
     with (Path(__file__).parent / 'graph').open('rb') as pickled:
         return pickle.load(pickled)
 

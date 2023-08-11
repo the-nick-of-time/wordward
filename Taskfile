@@ -26,12 +26,22 @@ function already_open() {
 
 ### TASKS
 function task_coverage {
-	: "Run and open coverage"
+	: "Run and open unit test coverage"
 	target="htmlcov/index.html"
 	make "$target"
 	if ! already_open "$(dirname "$target")" ; then
 	  firefox "$target"
 	fi
+}
+
+function task_run {
+  : "Find path between two words"
+  poetry run python wordward/connect.py "$@"
+}
+
+function task_clean {
+    : "Clean up outputs"
+    git clean -e .idea -xdf
 }
 
 # Print documentation for tasks
