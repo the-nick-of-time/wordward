@@ -11,6 +11,7 @@ networkx = "^3.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
+coverage = "^7.2.7"
 
 [build-system]
 requires = ["poetry-core"]

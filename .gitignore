@@ -1,2 +1,4 @@
 /.idea/
 /wordward/graph
+/.coverage
+/list-fftabs.py
