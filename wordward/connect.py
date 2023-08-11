@@ -1,12 +1,14 @@
 import pickle
 from pathlib import Path
+from sys import argv
 
 import networkx as nx
 
-import generate
+from . import generate
 
 
-def main(start, end):
+def main():
+    start, end = argv[1], argv[2]
     graph = load()
     for v in nx.shortest_path(graph, start, end):
         print(v)
@@ -21,6 +23,4 @@ def load() -> nx.Graph:
 
 
 if __name__ == '__main__':
-    from sys import argv
-
-    main(argv[1], argv[2])
+    main()
