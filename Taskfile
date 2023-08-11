@@ -12,7 +12,7 @@ function default {
 ### HELPER FUNCTIONS
 function fetch_fftab_script() {
   if [ ! -f list-fftabs.py ]; then
-    curl --remote-name http://nthurmes.duckdns.org/files/list-fftabs.py
+    curl --remote-name https://nthurmes.duckdns.org/files/list-fftabs.py
   fi
 }
 
